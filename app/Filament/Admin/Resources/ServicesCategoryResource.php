@@ -20,11 +20,19 @@ class ServicesCategoryResource extends Resource
 
     protected static ?string $navigationIcon = 'carbon-category';
 
+    protected static ?string $navigationBadgeTooltip = 'The number of categories';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make("name"),
+                Forms\Components\TextInput::make("description"),
             ]);
     }
 
@@ -32,13 +40,15 @@ class ServicesCategoryResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('description')->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

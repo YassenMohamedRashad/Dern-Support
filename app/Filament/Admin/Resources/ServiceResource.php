@@ -18,12 +18,21 @@ class ServiceResource extends Resource
     protected static ?string $model = Service::class;
 
     protected static ?string $navigationIcon = 'gmdi-design-services-s';
+    protected static ?string $navigationBadgeTooltip = 'The number of services';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make("name"),
+                Forms\Components\TextInput::make("description"),
+                Forms\Components\TextInput::make("cost"),
+                Forms\Components\Select::make("category_id")->relationship(name: "services_category", titleAttribute: "name")->native(false),
             ]);
     }
 
@@ -31,13 +40,18 @@ class ServiceResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')->searchable(),
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('description')->searchable(),
+                Tables\Columns\TextColumn::make('category_id'),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

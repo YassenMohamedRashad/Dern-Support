@@ -37,9 +37,9 @@ class RequestResource extends Resource
                 Forms\Components\Select::make('status')->required()->options([
                     "completed" => "completed",
                     "in_progress" => "in_progress",
-                ])->default("in_progress")->selectablePlaceholder(false),
+                ])->default("in_progress")->selectablePlaceholder(false)->native(false),
                 Forms\Components\Select::make("user_id")->relationship(name:"user",titleAttribute:"name")->required()->native(false)->searchable()->preload(),
-                Forms\Components\TextInput::make('service_id')->required()
+                Forms\Components\Select::make('service_id')->relationship(name: "service", titleAttribute: "name")->required()->native(false)
             ]);
     }
 
@@ -48,24 +48,24 @@ class RequestResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->searchable(),
-                Tables\Columns\TextColumn::make('total_cost')->sortable(),
+                Tables\Columns\TextColumn::make('user.name')->searchable(),
+                Tables\Columns\TextColumn::make('service.name')->searchable(),
                 Tables\Columns\TextColumn::make('details'),
                 Tables\Columns\TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'in progress' => 'gray',
-                        'completed' => 'success',
-                        'in_progress' => 'warning',
-                    }),
-                Tables\Columns\TextColumn::make('user.name'),
-                Tables\Columns\TextColumn::make('service_id'),
-            ])
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'completed' => 'success',
+                    'in_progress' => 'warning',
+                }),
+                Tables\Columns\TextColumn::make('total_cost')->sortable(),
+                ])
             ->filters([
                 SelectFilter::make('status')->label("status")
                     ->options([
                         "in_progress" => 'in_progress',
                         "completed" => 'completed',
-                    ]),
+                    ])->native(false),
+                SelectFilter::make('service.name')->label("service name")->native(false)
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
