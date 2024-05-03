@@ -10,7 +10,7 @@ class Service extends Model
 {
     use HasFactory;
 
-    public function services_category(): BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Services_category::class);
     }

@@ -4,10 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class is_admin
+class not_admin
 {
     /**
      * Handle an incoming request.
@@ -16,10 +15,9 @@ class is_admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (isset(Auth()->user()->id) && Auth()->user()->is_admin) {
-            return $next($request);
+        if (isset(Auth()->user()->id) &&Auth()->user()->is_admin) {
+            return redirect("/admin");
         }
-
-        return redirect("/");
+        return $next($request);
     }
 }

@@ -32,7 +32,7 @@ class ServiceResource extends Resource
                 Forms\Components\TextInput::make("name"),
                 Forms\Components\TextInput::make("description"),
                 Forms\Components\TextInput::make("cost"),
-                Forms\Components\Select::make("category_id")->relationship(name: "services_category", titleAttribute: "name")->native(false),
+                Forms\Components\Select::make("category_id")->relationship(name: "category", titleAttribute: "name")->native(false),
             ]);
     }
 
@@ -43,8 +43,7 @@ class ServiceResource extends Resource
                 Tables\Columns\TextColumn::make('id')->searchable(),
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('description')->searchable(),
-                Tables\Columns\TextColumn::make('category_id'),
-
+                Tables\Columns\TextColumn::make('category.name'),
             ])
             ->filters([
                 //

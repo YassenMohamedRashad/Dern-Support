@@ -1,12 +1,27 @@
 <?php
 
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\ServicesController;
+use App\Http\Middleware\is_user;
+use App\Http\Middleware\not_admin;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
 
-// Route::view('dashboard', 'dashboard')
-//     ->middleware(['auth', 'verified'])
-//     ->name('dashboard');
+Route::middleware([not_admin::class])->group(function () {
+    Route::get("/", function () {
+        return view("welcome");
+    });
+
+    Route::get("services", [ServicesController::class, 'index']);
+});
+
+
+Route::middleware([is_user::class])->group(function () {
+    Route::get("feedbacks", [FeedbackController::class, 'index']);
+    Route::get("make_request_form/{service_id}", [RequestsController::class, 'index']);
+    Route::post("make_request/{service_id}", [RequestsController::class, 'make_request']);
+});
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
