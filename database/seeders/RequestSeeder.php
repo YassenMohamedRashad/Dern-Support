@@ -14,7 +14,7 @@ class RequestSeeder extends Seeder
     public function run(): void
     {
         for ($i = 0; $i < 5; $i++) {
-            $status = ["in progress", "completed"];
+            $status = ["in_progress", "completed"];
             Request::create([
                 "total_cost" => random_int(70,190),
                 "details" => "i want to fix my problem",
