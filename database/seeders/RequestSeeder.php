@@ -20,7 +20,7 @@ class RequestSeeder extends Seeder
                 "details" => "i want to fix my problem",
                 "status" => $status[array_rand(["in_progress", "completed"])],
                 "user_id" => random_int(1,5),
-                "service_id" => random_int(1,5),
+                "service_id" => random_int(1,10),
             ]);
         }
     }

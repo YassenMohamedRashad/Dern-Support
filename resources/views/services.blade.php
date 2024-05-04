@@ -14,6 +14,7 @@
                 <p class="text-neutral-500 dark:text-neutral-300 w-100 break-words">
                     {{$service->description}}
                 </p>
+                <p>Service cost : <span class=" text-red-600">{{$service->cost}} $</span></p>
             </a>
 
             @endforeach
